@@ -129,11 +129,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>[1] "covid_data_count" "covid_data_long"  "covid_data_orig"  "covid_data_race" 
 [5] "has_annotations" </code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'scales'
+
+The following object is masked from 'package:purrr':
+
+    discard
+
+The following object is masked from 'package:readr':
+
+    col_factor</code></pre>
+</div>
 </div>
 <p>I’ve include 4 different data sets. They all have the same data but have it represented in different ways. Try using the different data sets and see which ones are good for making which plots.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>covid_data_count <span class="sc">|&gt;</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(race<span class="sc">==</span> <span class="st">"Total"</span>) <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> state, <span class="at">y =</span> Deaths)) <span class="sc">+</span> <span class="fu">geom_col</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>covid_data_count <span class="sc">|&gt;</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(race<span class="sc">==</span> <span class="st">"Total"</span>) <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> state, <span class="at">y =</span> Deaths)) <span class="sc">+</span> <span class="fu">geom_col</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Removed 74 rows containing missing values (`position_stack()`).</code></pre>
 </div>
@@ -143,9 +156,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>If you want to only look at a specific state, you can do it like this. For now, see what you can do just using <code>ggplot</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>covid_data_count <span class="sc">|&gt;</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(state <span class="sc">==</span> <span class="st">"MA"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> Cases, <span class="at">color =</span> race)) <span class="sc">+</span> <span class="fu">geom_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>covid_data_count <span class="sc">|&gt;</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(state <span class="sc">==</span> <span class="st">"MA"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> Cases, <span class="at">color =</span> race)) <span class="sc">+</span> <span class="fu">geom_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Week_02_Covid_Vis_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -153,29 +166,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ol type="1">
 <li>Write code for a plot and describe what you observe?</li>
 </ol>
+<p>I made two plots: one showing the proportion of COVID tests by race in several states and one showing the proportion of the population by race in those states.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(covid_data_long, <span class="fu">aes</span>(<span class="at">x =</span> count, <span class="at">y =</span> race)) <span class="sc">+</span> <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">fill =</span> count_type)) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"COVID Data by Race"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(covid_data_long, <span class="fu">aes</span>(<span class="at">x =</span> count, <span class="at">y =</span> race)) <span class="sc">+</span> <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">fill =</span> count_type)) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"COVID Data by Race"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Week_02_Covid_Vis_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>covid_data_long <span class="sc">|&gt;</span> </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(count_type <span class="sc">==</span> <span class="st">"Tests"</span> <span class="sc">&amp;</span> race <span class="sc">!=</span> <span class="st">"Total"</span>) <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> state, <span class="at">y=</span> count)) <span class="sc">+</span> <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">fill =</span> race), <span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Proportion of Tests by State and Race"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>covid_data_long <span class="sc">|&gt;</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(count_type <span class="sc">==</span> <span class="st">"Tests"</span> <span class="sc">&amp;</span> race <span class="sc">!=</span> <span class="st">"Total"</span>) <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> state, <span class="at">y=</span> count)) <span class="sc">+</span> <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">fill =</span> race), <span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"COVID Tests by Race"</span>, <span class="at">fill =</span> <span class="st">"Race"</span>, <span class="at">y =</span> <span class="st">"Proportion"</span>, <span class="at">x =</span> <span class="st">"State"</span>) <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Week_02_Covid_Vis_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>covid_data_long <span class="sc">|&gt;</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(race <span class="sc">!=</span> <span class="st">"Total"</span> <span class="sc">&amp;</span> state <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"CA"</span>, <span class="st">"DE"</span>, <span class="st">"IL"</span>, <span class="st">"KS"</span>, <span class="st">"MO"</span>, <span class="st">"NV"</span>, <span class="st">"RI"</span>, <span class="st">"UT"</span>)) <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> state, <span class="at">y =</span> population)) <span class="sc">+</span> <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">fill =</span> race), <span class="at">position =</span> <span class="st">"fill"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>covid_data_long <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(race <span class="sc">!=</span> <span class="st">"Total"</span> <span class="sc">&amp;</span> state <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"CA"</span>, <span class="st">"DE"</span>, <span class="st">"IL"</span>, <span class="st">"KS"</span>, <span class="st">"MO"</span>, <span class="st">"NV"</span>, <span class="st">"RI"</span>, <span class="st">"UT"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> state, <span class="at">y =</span> population)) <span class="sc">+</span> <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">fill=</span> race),  <span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"State Populations by Race"</span>, <span class="at">x =</span> <span class="st">"State"</span>, <span class="at">y =</span> <span class="st">"Proportion"</span>) <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Week_02_Covid_Vis_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ol start="2" type="1">
-<li>Are there any conclusions you can draw? Firstly, it’s interesting that we only have testing data for a handful of states.</li>
-<li>What were you not able to do due to not having the R knowledge?</li>
+<li>Are there any conclusions you can draw? Firstly, it’s interesting that we only have testing data for a handful of states. I wonder if most states did not collect testing data, or if our dataset just chose not to include it. I was surprised to see that, in most of the states we have data for, the proportion of tests for each race is relatively equal to the proportion of that race in that state’s population. ALthough, one discrepancy I noticed was that in Nevada, the Latinx population had disproportionally fewer tests. There is a note that the Latinx population counts may be inaccurate, so perhaps this is a demonstration of that. Also, it appears that AIAN, which compose a very small proportion of each state’s population, compose an even smaller proportion of each state’s COVID tests.</li>
+<li>What were you not able to do due to not having the R knowledge? I really, really wanted to combine the above two graphs so that the bars for each state were directly adjacent to each other. This would allow for easy comparison. I tried to add two geom_col’s, but I couldn’t get it to work. I’m wondering whether I need a different geom or maybe there’s an argument that I’m missing.</li>
 <li>What other data would be useful to better understand this data? I would love to have testing data for the rest of the states, to see if the patterns for this selection of states holds for those. Also, it would be interesting if we had data on whether or not the tests came back positive or negative. Perhaps some people have greater access to COVID tests, so they would be more likely to get tested even if they don’t have COVID.</li>
 </ol>
 

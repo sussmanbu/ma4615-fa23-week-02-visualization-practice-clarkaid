@@ -13,6 +13,7 @@ Note, due to differences in the way race and ethnicity are encoded in the census
 library(tidyverse)
 load("CRDT Data.RData")
 ls()
+library(scales)
 ```
 
 I've include 4 different data sets.
@@ -38,22 +39,25 @@ covid_data_count |>
 
 1. Write code for a plot and describe what you observe?
 
+I made two plots: one showing the proportion of COVID tests by race in several states and one showing the proportion of the population by race in those states.
+
 ````{r}
 ggplot(covid_data_long, aes(x = count, y = race)) + geom_col(aes(fill = count_type)) + labs(title = "COVID Data by Race")
 
 ```
 ```{r}
 covid_data_long |> 
-  filter(count_type == "Tests" & race != "Total") |> ggplot(aes(x = state, y= count)) + geom_col(aes(fill = race), position = "fill") + labs(title = "Proportion of Tests by State and Race")
+  filter(count_type == "Tests" & race != "Total") |> ggplot(aes(x = state, y= count)) + geom_col(aes(fill = race), position = "fill") + labs(title = "COVID Tests by Race", fill = "Race", y = "Proportion", x = "State") + scale_y_continuous(labels = scales::percent)
 ```
+
 ```{R}
 covid_data_long |>
-  filter(race != "Total" & state %in% c("CA", "DE", "IL", "KS", "MO", "NV", "RI", "UT")) |> ggplot(aes(x = state, y = population)) + geom_col(aes(fill = race), position = "fill") + labs(State Populations by Race)
+  filter(race != "Total" & state %in% c("CA", "DE", "IL", "KS", "MO", "NV", "RI", "UT")) |> 
+  ggplot(aes(x = state, y = population)) + geom_col(aes(fill= race),  position = "fill") + labs(title = "State Populations by Race", x = "State", y = "Proportion") + scale_y_continuous(labels = scales::percent)
 ```
 
-
 2. Are there any conclusions you can draw?
-Firstly, it's interesting that we only have testing data for a handful of states. I wonder if most states did not collect testing data, or if our dataset just chose not to include it. I was surprised to see that, in most of the states we have data for, the proportion of tests for each race is relatively equal to the proportion of that race in that state's population. ALthough, one discrepancy I noticed was that in Nevada, the Latinx population had disproportionally fewer tests. There is a note that the Latinx population counts may be inaccurate, so perhaps this is a demonstration of that.
+Firstly, it's interesting that we only have testing data for a handful of states. I wonder if most states did not collect testing data, or if our dataset just chose not to include it. I was surprised to see that, in most of the states we have data for, the proportion of tests for each race is relatively equal to the proportion of that race in that state's population. ALthough, one discrepancy I noticed was that in Nevada, the Latinx population had disproportionally fewer tests. There is a note that the Latinx population counts may be inaccurate, so perhaps this is a demonstration of that. Also, it appears that AIAN, which compose a very small proportion of each state's population, compose an even smaller proportion of each state's COVID tests.
 3. What were you not able to do due to not having the R knowledge?
 I really, really wanted to combine the above two graphs so that the bars for each state were directly adjacent to each other. This would allow for easy comparison. I tried to add two geom_col's, but I couldn't get it to work. I'm wondering whether I need a different geom or maybe there's an argument that I'm missing.
 4. What other data would be useful to better understand this data?
